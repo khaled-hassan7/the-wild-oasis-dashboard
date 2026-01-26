@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import AppLayout from "./ui/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import GlobalStyles from "./styles/GlobalStyle";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,23 @@ function App() {
           <Route path="login" element={<Login />} />
         </Routes>
       </BrowserRouter>
+      <Toaster
+        toastOptions={{
+          style: {
+            backgroundColor: "var(--color-grey-0)",
+            color: "var(--color-grey-700)",
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+          },
+          success: {
+            duration: 3000,
+          },
+          error: {
+            duration: 5000,
+          },
+        }}
+      />
     </QueryClientProvider>
   );
 }
