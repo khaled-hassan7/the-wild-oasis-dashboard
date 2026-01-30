@@ -5,6 +5,7 @@ import { DeleteCabins } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
+import useDeleteCabin from "./useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -48,19 +49,7 @@ const Discount = styled.div`
 function CabinRow({ cabin }) {
   const [isEdit, setIsEdit] = useState(false);
   const { id, image, name, regularPrice, discount, maxCapacity } = cabin;
-  const queryClient = useQueryClient();
-
-  const { isLoading, mutate } = useMutation({
-    mutationFn: DeleteCabins,
-    onSuccess: () => {
-      toast.success("cabin successfully deleted");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
+  const { isLoading, mutate } = useDeleteCabin();
   return (
     <>
       <TableRow>
