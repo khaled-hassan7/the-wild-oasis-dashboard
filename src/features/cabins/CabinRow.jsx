@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DeleteCabins } from "../../services/apiCabins";
-import toast from "react-hot-toast";
 import { useState } from "react";
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabin";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import useCreateCabin from "./useCreateCbin";
 
 const TableRow = styled.div`
   display: grid;
@@ -50,6 +49,17 @@ function CabinRow({ cabin }) {
   const [isEdit, setIsEdit] = useState(false);
   const { id, image, name, regularPrice, discount, maxCapacity } = cabin;
   const { isLoading, mutate } = useDeleteCabin();
+  const { isCreating, createCabin } = useCreateCabin();
+
+  function handelDoublicat() {
+    createCabin({
+      image,
+      name: `copy of ${name}`,
+      regularPrice,
+      discount,
+      maxCapacity,
+    });
+  }
   return (
     <>
       <TableRow>
@@ -59,14 +69,19 @@ function CabinRow({ cabin }) {
         <Price> {formatCurrency(regularPrice)}</Price>
         <Discount>{formatCurrency(discount)}</Discount>
         <div>
-          <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
+          <button disabled={isCreating} onClick={handelDoublicat}>
+            <HiSquare2Stack />
+          </button>
+          <button onClick={() => setIsEdit(!isEdit)}>
+            <HiPencil />
+          </button>
           <button
             onClick={() => {
               mutate(id);
             }}
             disabled={isLoading}
           >
-            Delete
+            <HiTrash />
           </button>
         </div>
       </TableRow>
