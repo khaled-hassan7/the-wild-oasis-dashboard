@@ -1,4 +1,3 @@
-import styled from "styled-components";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -12,7 +11,7 @@ import useCreateCabin from "./useCreateCbin";
 import useEditCabin from "./useEditCabin";
 import FormRow from "../../ui/FormRow";
 
-function CreateCabinForm({ editCabinData }) {
+function CreateCabinForm({ editCabinData = {}, onCloseModal }) {
   const { createCabin, isCreating } = useCreateCabin();
   const { editCabin, isEditing } = useEditCabin();
 
@@ -31,9 +30,23 @@ function CreateCabinForm({ editCabinData }) {
     if (isEditSession)
       editCabin(
         { newCabin: { ...data, image }, id: editId },
-        { onSuccess: () => reset() },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        },
       );
-    else createCabin({ ...data, image }, { onSuccess: () => reset() });
+    else
+      createCabin(
+        { ...data, image },
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
+        },
+      );
   }
   const isWorking = isCreating || isEditing;
   function onError(error) {}
@@ -113,7 +126,12 @@ function CreateCabinForm({ editCabinData }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" disabled={isWorking}>
+        <Button
+          variation="secondary"
+          type="reset"
+          disabled={isWorking}
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button>{isEditSession ? "Edit capin" : "Add Cabin"}</Button>
