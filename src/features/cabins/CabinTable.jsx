@@ -1,13 +1,43 @@
-import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import useCabins from "./useCabins";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { useSearchParams } from "react-router-dom";
 
 function CabinTable() {
   const { isLoading, cabins } = useCabins();
+  const [searchParams] = useSearchParams();
   if (isLoading) return <Spinner />;
+
+  // 1-filter
+  const filterValue = searchParams.get("discount") || "all";
+
+  let filteredcabins;
+
+  if (filterValue === "all") filteredcabins = cabins;
+  if (filterValue === "with-discount")
+    filteredcabins = cabins.filter((cabin) => cabin.discount > 0);
+  if (filterValue === "no-discount")
+    filteredcabins = cabins.filter((cabin) => cabin.discount === 0);
+
+  //  2-sort by
+
+  const sortBy = searchParams.get("sortBy") || "startDate-asc";
+  const [field, direction] = sortBy.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+
+  const storedCabins = [...filteredcabins].sort((a, b) => {
+    const valueA = a[field];
+    const valueB = b[field];
+
+    if (typeof valueA === "number" && typeof valueB === "number") {
+      return (valueA - valueB) * modifier;
+    }
+
+    return String(valueA).localeCompare(String(valueB)) * modifier;
+  });
+
 
   return (
     <Menus>
@@ -22,7 +52,7 @@ function CabinTable() {
         </Table.Header>
 
         <Table.Body
-          data={cabins}
+          data={storedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
       </Table>
