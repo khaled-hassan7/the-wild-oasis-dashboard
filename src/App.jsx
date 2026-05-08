@@ -14,6 +14,7 @@ import GlobalStyles from "./styles/GlobalStyle";
 import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
 import CheckIn from "./pages/CheckIn";
+import ProtectRoute from "./ui/ProtectRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,45 +26,51 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <GlobalStyles />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="account" element={<Account />} />
-            <Route path="bookings" element={<Bookings />} />
-            <Route path="bookings/:bookingId" element={<Booking />} />
-            <Route path="checkIn/:bookingId" element={<CheckIn />} />
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              element={
+                <ProtectRoute>
+                  <AppLayout />
+                </ProtectRoute>
+              }
+            >
+              <Route index element={<Navigate to="dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="account" element={<Account />} />
+              <Route path="bookings" element={<Bookings />} />
+              <Route path="bookings/:bookingId" element={<Booking />} />
+              <Route path="checkIn/:bookingId" element={<CheckIn />} />
 
-            <Route path="cabins" element={<Cabins />} />
-            <Route path="sitting" element={<Settings />} />
-            <Route path="users" element={<Users />} />
-          </Route>
-          <Route path="pageNotFound" element={<PageNotFound />} />
-          <Route path="login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster
-        toastOptions={{
-          style: {
-            backgroundColor: "var(--color-grey-0)",
-            color: "var(--color-grey-700)",
-            fontSize: "16px",
-            maxWidth: "500px",
-            padding: "16px 24px",
-          },
-          success: {
-            duration: 3000,
-          },
-          error: {
-            duration: 5000,
-          },
-        }}
-      />
-    </QueryClientProvider>
+              <Route path="cabins" element={<Cabins />} />
+              <Route path="sitting" element={<Settings />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+            <Route path="pageNotFound" element={<PageNotFound />} />
+            <Route path="login" element={<Login />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster
+          toastOptions={{
+            style: {
+              backgroundColor: "var(--color-grey-0)",
+              color: "var(--color-grey-700)",
+              fontSize: "16px",
+              maxWidth: "500px",
+              padding: "16px 24px",
+            },
+            success: {
+              duration: 3000,
+            },
+            error: {
+              duration: 5000,
+            },
+          }}
+        />
+      </QueryClientProvider>
   );
 }
 
