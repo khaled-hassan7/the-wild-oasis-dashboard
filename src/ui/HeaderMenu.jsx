@@ -20,6 +20,9 @@ function HeaderMenu() {
         </ButtonIcon>
       </li>
       <li>
+        <DarkModeToggle />
+      </li>
+      <li>
         <Logout />
       </li>
     </StyleHeaderMenu>
