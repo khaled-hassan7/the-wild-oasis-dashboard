@@ -10,11 +10,11 @@ import PageNotFound from "./pages/PageNotFound";
 import Login from "./pages/Login";
 import AppLayout from "./ui/AppLayout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import GlobalStyles from "./styles/GlobalStyle";
 import { Toaster } from "react-hot-toast";
 import Booking from "./pages/Booking";
 import CheckIn from "./pages/CheckIn";
 import ProtectRoute from "./ui/ProtectRoute";
+import { DarkModeProvider } from "./context/darkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,9 +26,9 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
+    <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
         <BrowserRouter>
           <Routes>
             <Route
@@ -71,6 +71,7 @@ function App() {
           }}
         />
       </QueryClientProvider>
+    </DarkModeProvider>
   );
 }
 
