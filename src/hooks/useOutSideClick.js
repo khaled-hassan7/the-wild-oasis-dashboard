@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-function useOutSideClick(handler) {
+function useOutSideClick(handler, listenCapturing) {
   const ref = useRef();
   useEffect(
     function () {
@@ -8,11 +8,12 @@ function useOutSideClick(handler) {
         if (ref.current && !ref.current.contains(e.target)) handler();
       }
 
-      document.addEventListener("click", handleClick, true);
+      document.addEventListener("click", handleClick, listenCapturing);
 
-      return () => document.removeEventListener("click", handleClick, true);
+      return () =>
+        document.removeEventListener("click", handleClick, listenCapturing);
     },
-    [handler],
+    [handler, listenCapturing],
   );
 
   return ref;
