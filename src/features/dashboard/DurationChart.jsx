@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { useDarkMode } from "../../context/DarkModeContext";
+import useIsMobile from "../../hooks/useIsMobile";
 
 const ChartBox = styled.div`
   /* Box */
@@ -25,6 +26,11 @@ const ChartBox = styled.div`
 
   & .recharts-pie-label-text {
     font-weight: 600;
+  }
+
+  /* Full width when the dashboard grid has fewer than 4 columns */
+  @media (max-width: 64em) {
+    grid-column: 1 / -1;
   }
 `;
 
@@ -143,6 +149,7 @@ function prepareData(startData, stays) {
 
 function DurationChart({ confirmedStayed }) {
   const { isDarkMode } = useDarkMode();
+  const isMobile = useIsMobile();
 
   const startData = isDarkMode ? startDataDark : startDataLight;
   const data = prepareData(startData, confirmedStayed);
@@ -156,8 +163,8 @@ function DurationChart({ confirmedStayed }) {
             data={data}
             nameKey="duration"
             dataKey="value"
-            innerRadius={85}
-            outerRadius={110}
+            innerRadius={isMobile ? 55 : 85}
+            outerRadius={isMobile ? 75 : 110}
             cx="40%"
             cy="50%"
             paddingAngle={3}

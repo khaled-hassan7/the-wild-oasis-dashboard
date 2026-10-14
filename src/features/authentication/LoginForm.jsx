@@ -6,9 +6,11 @@ import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import useLogin from "./useLogin";
 
+const DEMO = { email: "demo@wildoasis.com", password: "123456789" };
+
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(DEMO.email);
+  const [password, setPassword] = useState(DEMO.password);
   const { login, isLoading } = useLogin();
 
   function handleSubmit(e) {
@@ -53,6 +55,9 @@ function LoginForm() {
           {!isLoading ? "Login" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
+      <p style={{ fontSize: "1.3rem", textAlign: "center" }}>
+        Demo account, just press Login
+      </p>
     </Form>
   );
 }

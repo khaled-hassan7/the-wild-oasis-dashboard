@@ -38,10 +38,17 @@ function CabinTable() {
     return String(valueA).localeCompare(String(valueB)) * modifier;
   });
 
-
   return (
     <Menus>
-      <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table
+        columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr"
+        mobile={{
+          columns: "auto minmax(0, 1fr) auto auto",
+          areas:
+            '"img name name menu" "img capacity capacity menu" "img price discount menu"',
+          cells: ["img", "name", "capacity", "price", "discount", "menu"],
+        }}
+      >
         <Table.Header>
           <div></div>
           <div>Cabin</div>

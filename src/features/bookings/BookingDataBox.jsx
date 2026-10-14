@@ -49,10 +49,39 @@ const Header = styled.header`
     font-size: 2rem;
     margin-left: 4px;
   }
+
+  @media (max-width: 64em) {
+    flex-wrap: wrap;
+    gap: 0.8rem 2.4rem;
+  }
+
+  /* NEW: الموبايل */
+  @media (max-width: 48em) {
+    padding: 1.6rem 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 1.4rem;
+
+    & div:first-child {
+      font-size: 1.6rem;
+    }
+    & span {
+      font-size: 1.8rem;
+    }
+    svg {
+      height: 2.8rem;
+      width: 2.8rem;
+    }
+  }
 `;
 
 const Section = styled.section`
   padding: 3.2rem 4rem 1.2rem;
+
+  /* NEW */
+  @media (max-width: 48em) {
+    padding: 2rem 2rem 1.2rem;
+  }
 `;
 
 const Guest = styled.div`
@@ -65,6 +94,22 @@ const Guest = styled.div`
   & p:first-of-type {
     font-weight: 500;
     color: var(--color-grey-700);
+  }
+
+  @media (max-width: 48em) {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+
+    & > span {
+      display: none; 
+    }
+    & p {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    & p:not(:first-of-type) {
+      flex-basis: 100%;
+    }
   }
 `;
 
@@ -93,6 +138,14 @@ const Price = styled.div`
     width: 2.4rem;
     color: currentColor !important;
   }
+
+  @media (max-width: 48em) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+    padding: 1.6rem 2rem;
+    margin-top: 1.6rem;
+  }
 `;
 
 const Footer = styled.footer`
@@ -100,8 +153,12 @@ const Footer = styled.footer`
   font-size: 1.2rem;
   color: var(--color-grey-500);
   text-align: right;
-`;
 
+  /* NEW */
+  @media (max-width: 48em) {
+    padding: 1.2rem 2rem;
+  }
+`;
 // A purely presentational component
 function BookingDataBox({ booking }) {
   const {

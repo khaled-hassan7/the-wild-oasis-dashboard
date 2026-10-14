@@ -18,6 +18,11 @@ const StyledToday = styled.div`
   gap: 2.4rem;
   grid-column: 1 / span 2;
   padding-top: 2.4rem;
+
+  /* Full width when the dashboard grid has fewer than 4 columns */
+  @media (max-width: 64em) {
+    grid-column: 1 / -1;
+  }
 `;
 
 const TodayList = styled.ul`

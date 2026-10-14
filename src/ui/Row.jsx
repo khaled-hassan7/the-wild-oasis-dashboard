@@ -8,7 +8,6 @@ const Row = styled.div`
     css`
       flex-direction: column;
       gap: 1.5rem;
-      
     `}
 
   ${(props) =>
@@ -17,6 +16,12 @@ const Row = styled.div`
       justify-content: space-between;
       align-items: center;
     `}
+
+    @media (max-width: 64em) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.6rem; 
+  }
 `;
 
 Row.defaultProps = {

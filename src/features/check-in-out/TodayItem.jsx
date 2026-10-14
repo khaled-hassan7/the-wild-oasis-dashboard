@@ -18,6 +18,32 @@ const StyledTodayItem = styled.li`
   &:first-child {
     border-top: 1px solid var(--color-grey-100);
   }
+
+  /* Reflow to two rows on mobile so nothing gets clipped */
+  @media (max-width: 48em) {
+    grid-template-columns: minmax(0, 9rem) 2rem minmax(0, 1fr);
+    grid-template-areas:
+      "tag flag guest"
+      "nights . button";
+    gap: 0.4rem 1.2rem;
+
+    & > *:nth-child(1) {
+      grid-area: tag;
+    }
+    & > *:nth-child(2) {
+      grid-area: flag;
+    }
+    & > *:nth-child(3) {
+      grid-area: guest;
+    }
+    & > *:nth-child(4) {
+      grid-area: nights;
+    }
+    & > *:nth-child(5) {
+      grid-area: button;
+      justify-self: end;
+    }
+  }
 `;
 
 const Guest = styled.div`

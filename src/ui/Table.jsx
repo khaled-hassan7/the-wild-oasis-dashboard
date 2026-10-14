@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -8,6 +8,11 @@ const StyledTable = styled.div`
   background-color: var(--color-grey-0);
   border-radius: 7px;
   overflow: hidden;
+
+  /* On small screens, wide rows scroll horizontally instead of being crushed */
+  @media (max-width: 64em) {
+    overflow-x: auto;
+  }
 `;
 
 const CommonRow = styled.div`
@@ -16,6 +21,38 @@ const CommonRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
+
+  /* Preserve desktop-like column proportions while scrolling horizontally */
+  @media (max-width: 64em) {
+    min-width: 64rem;
+  }
+`;
+
+/* NEW: وضع الكروت، بيتحدد من الـ object اللي الجدول بيمرره */
+const mobileCss = (m) => css`
+  @media (max-width: 48em) {
+    min-width: 0;
+    grid-template-columns: ${m.columns};
+    grid-template-areas: ${m.areas};
+    column-gap: 1.2rem;
+    row-gap: 0.4rem;
+    padding: 1.2rem 1.6rem;
+
+    & > * {
+      min-width: 0;
+    }
+
+    ${m.cells
+      .map((name, i) => {
+        const end = ["status", "amount", "discount", "menu"].includes(name);
+        return `& > :nth-child(${i + 1}) {
+          grid-area: ${name};
+          ${end ? "justify-self: end;" : ""}
+          ${name === "menu" ? "align-self: center;" : ""}
+        }`;
+      })
+      .join("\n")}
+  }
 `;
 
 const StyledHeader = styled(CommonRow)`
@@ -27,6 +64,15 @@ const StyledHeader = styled(CommonRow)`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-600);
+
+  /* NEW: الهيدر بيختفي بس في وضع الكروت */
+  ${(p) =>
+    p.$mobile &&
+    css`
+      @media (max-width: 48em) {
+        display: none;
+      }
+    `}
 `;
 
 const StyledRow = styled(CommonRow)`
@@ -35,6 +81,9 @@ const StyledRow = styled(CommonRow)`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
+
+  /* NEW */
+  ${(p) => p.$mobile && mobileCss(p.$mobile)}
 `;
 
 const StyledBody = styled.section`
@@ -46,6 +95,12 @@ const Footer = styled.footer`
   display: flex;
   justify-content: center;
   padding: 1.2rem;
+
+  /* Keep pagination fully visible while the table scrolls horizontally */
+  @media (max-width: 64em) {
+    position: sticky;
+    left: 0;
+  }
 
   /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
@@ -61,28 +116,28 @@ const Empty = styled.p`
 `;
 const TableContext = createContext();
 
-function Table({ children, columns }) {
+function Table({ children, columns, mobile }) { // NEW: mobile
   return (
-    <TableContext.Provider value={{ columns }}>
+    <TableContext.Provider value={{ columns, mobile }}>
       <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
 }
 
 function Header({ children }) {
-  const { columns } = useContext(TableContext);
+  const { columns, mobile } = useContext(TableContext);
 
   return (
-    <StyledHeader role="row" columns={columns}>
+    <StyledHeader role="row" columns={columns} $mobile={mobile}>
       {children}
     </StyledHeader>
   );
 }
 function Row({ children }) {
-  const { columns } = useContext(TableContext);
+  const { columns, mobile } = useContext(TableContext);
 
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" columns={columns} $mobile={mobile}>
       {children}
     </StyledRow>
   );

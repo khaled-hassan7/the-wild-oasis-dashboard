@@ -13,6 +13,18 @@ const StyledDashboardLayout = styled.div`
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
+
+  /* Tablet: two columns — stat cards pair up, charts go full width */
+  @media (max-width: 64em) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, auto) 34rem repeat(2, auto);
+  }
+
+  /* Mobile: single column */
+  @media (max-width: 48em) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto) 34rem repeat(2, auto);
+  }
 `;
 
 function DashboardLayout() {

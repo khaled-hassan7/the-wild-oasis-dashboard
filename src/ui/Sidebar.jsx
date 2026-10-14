@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
-import Uploader from "../data/Uploader";
+
 const StyleSideBar = styled.aside`
   background-color: var(--color-grey-0);
   padding: 3.2rem 2.4rem;
@@ -11,6 +11,11 @@ const StyleSideBar = styled.aside`
   gap: 3.2rem;
 
   grid-row: 1/-1;
+
+  /* Replaced by the fixed MobileNav bar on mobile screens */
+  @media (max-width: 48em) {
+    display: none;
+  }
 `;
 function Sidebar() {
   return (
